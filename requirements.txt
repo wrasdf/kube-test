@@ -1,0 +1,5 @@
+boto3==1.6.19
+kubernetes==5.0
+green==2.12.1
+unittest2
+mock
