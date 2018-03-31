@@ -6,7 +6,7 @@ class DeploymentManager:
         config.load_kube_config()
         self.api = client.ExtensionsV1beta1Api()
 
-    def get_namespaced_deployment(self, namespace):
+    def list_namespaced_deployments(self, namespace):
         deployments = []
         api_response = self.api.list_namespaced_deployment(namespace).items
         for item in api_response:

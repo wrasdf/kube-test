@@ -14,8 +14,8 @@ class TestDaemonsetsManager(unittest.TestCase):
     def setUp(self):
         self.daemonset_manager = DaemonsetManager()
 
-    def test_get_kube_system_daemonsets(self):
-        self.kube_system_daemonsets = self.daemonset_manager.get_namespaced_daemonset('kube-system')
+    def test_kube_system_daemonsets(self):
+        self.kube_system_daemonsets = self.daemonset_manager.list_namespaced_daemonsets('kube-system')
         for daemonsets in must_have_daemonsets:
             self.assertIn(daemonsets, self.kube_system_daemonsets)
 

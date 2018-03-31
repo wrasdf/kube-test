@@ -41,8 +41,8 @@ class TestDeploymentsManager(unittest.TestCase):
     def setUp(self):
         self.deploy_manager = DeploymentManager()
 
-    def test_get_kube_system_daemonsets(self):
-        self.kube_system_deploys = self.deploy_manager.get_namespaced_deployment('kube-system')
+    def test_kube_system_deployment(self):
+        self.kube_system_deploys = self.deploy_manager.list_namespaced_deployments('kube-system')
         for deploy in must_have_deploys:
             self.assertIn(deploy, self.kube_system_deploys)
 

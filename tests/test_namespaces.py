@@ -16,7 +16,7 @@ class TestNamespaceManager(unittest.TestCase):
         self.ns_manager = NamespaceManager()
 
     def test_get_namespaces(self):
-        self.cluster_namespaces = self.ns_manager.get_all_namespaces()
+        self.cluster_namespaces = self.ns_manager.list_all_namespaces()
         for namespace in must_have_namespaces:
             self.assertIn(namespace, self.cluster_namespaces)
 
