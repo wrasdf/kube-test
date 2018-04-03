@@ -1,14 +1,14 @@
-import os
-import sys
-import ssl
-
-here = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(here, '../kube'))
-
 import unittest
-from namespace import NamespaceManager
+from kube.namespace import NamespaceManager
 
-must_have_namespaces = ['default', 'heptio-ark', 'kube-public', 'kube-system', 'platform-enablement', 'platform-enablement-shadow']
+must_have_namespaces = [
+    'default',
+    'heptio-ark',
+    'kube-public',
+    'kube-system',
+    'platform-enablement',
+    'platform-enablement-shadow'
+]
 
 class TestNamespaceManager(unittest.TestCase):
 

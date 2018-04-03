@@ -1,13 +1,12 @@
-import os
-import sys
-
-here = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(here, '../kube'))
-
 import unittest
-from daemonset import DaemonsetManager
+from kube.daemonset import DaemonsetManager
 
-must_have_daemonsets = ['canal', 'kube-logging', 'kube2iam', 'prometheus-node-exporter']
+must_have_daemonsets = [
+    'canal',
+    'kube-logging',
+    'kube2iam',
+    'prometheus-node-exporter'
+]
 
 class TestDaemonsetsManager(unittest.TestCase):
 

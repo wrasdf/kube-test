@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: test-role-deployment
+  namespace: platform-enablement
+  labels:
+    app: test-role
+    repo: kube-test
+    deployed-with: python
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: test-role
+        repo: kube-test
+    spec:
+      serviceAccountName: test-role-service-account
+      containers:
+        - name: test-role-container
+          image: 

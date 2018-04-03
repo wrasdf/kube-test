@@ -1,11 +1,5 @@
-import os
-import sys
-
-here = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(here, '../kube'))
-
 import unittest
-from deployment import DeploymentManager
+from kube.deployment import DeploymentManager
 
 must_have_deploys = [
     # system
