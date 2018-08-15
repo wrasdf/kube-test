@@ -17,6 +17,7 @@ must_have_deploys = [
     'alerting-rules-operator',
 
     # monitoring
+    'grafana',
     'metrics-server',
     'kube-state-metrics',
     'cloudwatch-exporter',
