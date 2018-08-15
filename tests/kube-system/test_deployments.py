@@ -3,39 +3,38 @@ from kube.deployment import DeploymentManager
 
 must_have_deploys = [
     # system
-    'kube-dns',
-    'kube-dns-autoscaler',
-    'dns-controller',
-    'cluster-autoscaler',
+    'ark',
     'cert-manager',
+    'coredns',
+    'cluster-autoscaler',
     'ingress-nodeport',
     'nodeport-default-backend',
+    'kubernetes-dashboard-adfs',
+    'node-drainer',
 
     # operators
     'db-operator',
     'alerting-rules-operator',
 
     # monitoring
-    'grafana',
-    'heapster',
+    'metrics-server',
     'kube-state-metrics',
-    'kubernetes-dashboard-adfs',
-    'monitoring-influxdb',
+    'cloudwatch-exporter',
+    'aws-limits-exporter',
     'prometheus-alert-pipeline-monitor',
-    'prometheus-alertmanager',
-    'prometheus-server',
 
     #logs
-    'cloudwatch-exporter'
+    'kube-logging-events'
     ]
 
 class TestDeploymentsManager(unittest.TestCase):
 
     def setUp(self):
         self.deploy_manager = DeploymentManager()
+        self.namespace = 'kube-system'
 
     def test_kube_system_deployment(self):
-        self.kube_system_deploys = self.deploy_manager.list_namespaced_deployments('kube-system')
+        self.kube_system_deploys = self.deploy_manager.list_namespaced_deployments(self.namespace)
         for deploy in must_have_deploys:
             self.assertIn(deploy, self.kube_system_deploys)
 

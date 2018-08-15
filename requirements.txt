@@ -1,7 +1,5 @@
-boto3==1.6.19
-botocore==1.9.19
-kubernetes==6.0.0b1
+boto3==1.7.77
+kubernetes==7.0.0b1
 unittest2==1.1.0
-mock==2.0.0
 pprint==0.1
-green
+green==2.12.1

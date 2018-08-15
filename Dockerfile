@@ -1,12 +1,13 @@
-FROM lachlanevenson/k8s-kubectl:v1.9.6 as kubectlContainer
+FROM lachlanevenson/k8s-kubectl:v1.11.2 as kubectlContainer
 
 FROM python:alpine3.6
 COPY --from=kubectlContainer /usr/local/bin/kubectl /usr/local/bin/kubectl
 
-RUN mkdir /app
 WORKDIR /app
+RUN apk --update add gcc musl-dev libffi-dev linux-headers python3-dev openssl-dev make bash jq curl && \
+  rm -rf /tmp/* /var/cache/apk/*
 
-RUN apk add --update bash curl openssl jq make
+COPY requirements.txt /app
+RUN pip install --upgrade pip && pip install -r /app/requirements.txt
 
-COPY requirements.txt /app/requirements.txt
-RUN pip install --upgrade pip && pip install -r requirements.txt
+COPY . /app
