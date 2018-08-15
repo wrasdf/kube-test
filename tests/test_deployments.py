@@ -8,7 +8,6 @@ must_have_deploys = [
     'dns-controller',
     'cluster-autoscaler',
     'cert-manager',
-    'kube-lego',
     'ingress-nodeport',
     'nodeport-default-backend',
 

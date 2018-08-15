@@ -3,11 +3,8 @@ from kube.namespace import NamespaceManager
 
 must_have_namespaces = [
     'default',
-    'heptio-ark',
     'kube-public',
-    'kube-system',
-    'platform-enablement',
-    'platform-enablement-shadow'
+    'kube-system'
 ]
 
 class TestNamespaceManager(unittest.TestCase):
