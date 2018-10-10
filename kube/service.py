@@ -1,9 +1,10 @@
 from kubernetes import client, config
+from .config_manager import ConfigManager
 
 class ServiceManager:
 
     def __init__(self):
-        config.load_kube_config()
+        ConfigManager()
         self.api = client.CoreV1Api()
 
     def list_namespaced_service(self, namespace):

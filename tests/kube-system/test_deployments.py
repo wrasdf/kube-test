@@ -4,6 +4,7 @@ from kube.deployment import DeploymentManager
 must_have_deploys = [
     # system
     'ark',
+    'dex',
     'cert-manager',
     'coredns',
     'cluster-autoscaler',

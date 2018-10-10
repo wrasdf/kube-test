@@ -1,9 +1,10 @@
 from kubernetes import client, config
+from .config_manager import ConfigManager
 
 class DeploymentManager:
 
     def __init__(self):
-        config.load_kube_config()
+        ConfigManager()
         self.api = client.ExtensionsV1beta1Api()
 
     def list_namespaced_deployments(self, namespace):

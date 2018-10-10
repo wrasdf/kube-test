@@ -1,9 +1,10 @@
 from kubernetes import client, config
+from .config_manager import ConfigManager
 
 class NamespaceManager:
 
     def __init__(self):
-        config.load_kube_config()
+        ConfigManager()
         self.api = client.CoreV1Api()
 
     def list_all_namespaces(self):
