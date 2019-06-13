@@ -3,18 +3,20 @@ from kube.deployment import DeploymentManager
 
 must_have_deploys = [
     # system
-    'ark',
     'dex',
     'cert-manager',
     'coredns',
-    'cluster-autoscaler',
+    'velero',
     'ingress-nodeport',
-    'nodeport-default-backend',
     'kubernetes-dashboard-adfs',
+    'cluster-autoscaler',
+    'cluster-overprovisioner',
+    'smooth-updater',
     'node-drainer',
 
     # operators
     'db-operator',
+    'sqs-operator',
     'alerting-rules-operator',
 
     # monitoring

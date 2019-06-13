@@ -2,10 +2,13 @@ import unittest
 from kube.daemonset import DaemonsetManager
 
 must_have_daemonsets = [
+    'cadvisor',
     'canal',
+    'cloudsmith-login',
+    'kiam-agent',
+    'kiam-server',
     'kube-logging',
     'kube-proxy',
-    'kube2iam',
     'node-problem-detector',
     'prometheus-node-exporter'
 ]
