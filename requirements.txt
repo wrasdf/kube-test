@@ -1,5 +1,5 @@
 boto3==1.7.77
-kubernetes==7.0.0
+kubernetes==9.0.0
 unittest2==1.1.0
 pprint==0.1
 green==2.12.1

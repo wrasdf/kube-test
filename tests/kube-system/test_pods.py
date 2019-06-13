@@ -9,8 +9,10 @@ class TestPodsManager(unittest.TestCase):
 
     def test_kube_system_pods_healthy(self):
         kube_system_pods = self.pod_manager.list_namespaced_pods(self.namespace)
+        results = ['Running', 'Succeeded']
         for pod in kube_system_pods:
-            self.assertEqual(pod.status.phase, 'Running')
+            statusResult = pod.status.phase in results
+            self.assertTrue(statusResult)
 
 if __name__ == '__main__':
     unittest.main()

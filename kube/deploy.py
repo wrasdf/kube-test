@@ -13,7 +13,7 @@ class DeployManager:
 #   - deploy kube-demo into current cluster
 #   - test ingress works
 #   - delete the app
-# - Kube2iam scenario test
-#   - deploy kube2iam into current cluster
+# - kiam scenario test
+#   - deploy kiam into current cluster
 #   - test permission with s3 works
 #   - delete the app
