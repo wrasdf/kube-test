@@ -1,5 +1,11 @@
+import os
+import importlib
 from kubernetes import client, config
-from .config_manager import ConfigManager
+
+current_dir = os.path.dirname(__file__)
+importlib.machinery.SourceFileLoader("config_manager", os.path.join(current_dir, "config_manager.py")).load_module()
+from config_manager import ConfigManager
+
 
 class NamespaceManager:
 
