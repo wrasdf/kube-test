@@ -24,7 +24,7 @@ class ServiceManager:
         self.coreApi = client.CoreV1Api()
 
     def list_namespaced_service(self, namespace):
-        return self.coreApi.list_namespaced_service(namespace, watch=False).items
+        return list(map(lambda x: x.metadata.name, self.coreApi.list_namespaced_service(namespace).items))
 
     def get_metadata(self, params):
         return client.V1ObjectMeta(
@@ -49,7 +49,8 @@ class ServiceManager:
             selector={
                 'app': params['name'],
                 'purpose': 'test'
-            }
+            },
+            type='ClusterIP'
         )
 
     def create_namespaced_service(self, params):
@@ -66,37 +67,15 @@ class ServiceManager:
         except ApiException as e:
             print("Exception when calling CoreV1Api->create_namespaced_service: %s\n" % e)
 
-    def replace_namespaced_service(self, params):
-        try:
-            return self.coreApi.replace_namespaced_service(
-                params['namespace'],
-                client.V1Service(
-                    api_version='v1',
-                    kind='Service',
-                    metadata=self.get_metadata(params),
-                    spec=self.get_spec(params)
-                )
-            )
-        except ApiException as e:
-            print("Exception when calling CoreV1Api->create_namespaced_service: %s\n" % e)
-
-    def apply_namespaced_service(self, params):
+    def apply_namesapced_service(self, params):
         if params['name'] in self.list_namespaced_service(params['namespace']):
-            self.replace_namespaced_service(params)
-        else:
-            self.create_namespaced_service(params)
+            self.delete_namespaced_service(params)
 
-    def delete_namespaced_service(self, name, namespace):
+        self.create_namespaced_service(params)
+
+    def delete_namespaced_service(self, params):
         # No service
         if params['name'] not in self.list_namespaced_service(params['namespace']):
             print("No service resource {0} in namespace {1}".format(params['name'], params['namespace']))
             return True
-
-        try:
-            return self.coreApi.delete_namespaced_service(
-                params['name'],
-                params['namespace']
-            )
-        except ApiException as e:
-            print(
-                "Exception when calling CoreV1Api->delete_namespaced_service: %s\n" % e)
+        return self.coreApi.delete_namespaced_service(params['name'], params['namespace'])
