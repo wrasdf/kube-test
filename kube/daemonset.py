@@ -14,8 +14,4 @@ class DaemonsetManager:
         self.api = client.ExtensionsV1beta1Api()
 
     def list_namespaced_daemonsets(self, namespace):
-        daemonsets = []
-        api_response = self.api.list_namespaced_daemon_set(namespace).items
-        for item in api_response:
-            daemonsets.append(item.metadata.name)
-        return daemonsets
+        return list(map(lambda x: x.metadata.name, self.api.list_namespaced_daemon_set(namespace).items))

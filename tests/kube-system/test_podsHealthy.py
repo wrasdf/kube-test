@@ -12,6 +12,8 @@ class TestPodsManager(unittest.TestCase):
         results = ['Running', 'Succeeded']
         for pod in kube_system_pods:
             statusResult = pod.status.phase in results
+            if statusResult is False:
+                print(pod.status)
             self.assertTrue(statusResult)
 
 if __name__ == '__main__':

@@ -14,8 +14,4 @@ class NamespaceManager:
         self.api = client.CoreV1Api()
 
     def list_all_namespaces(self):
-        namespaces = []
-        api_response = self.api.list_namespace().items
-        for item in api_response:
-            namespaces.append(item.metadata.name)
-        return namespaces
+        return list(map(lambda x: x.metadata.name, self.api.list_namespace().items))
