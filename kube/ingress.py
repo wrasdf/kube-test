@@ -1,14 +1,24 @@
-from config_manager import ConfigManager
 import os
 import importlib
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 
 current_dir = os.path.dirname(__file__)
-importlib.machinery.SourceFileLoader("config_manager", os.path.join(
-    current_dir, "config_manager.py")).load_module()
+importlib.machinery.SourceFileLoader("config_manager", os.path.join(current_dir, "config_manager.py")).load_module()
+importlib.machinery.SourceFileLoader("secret", os.path.join(current_dir, "secret.py")).load_module()
+from config_manager import ConfigManager
+from secret import SecretManager
 
-
+# example of params:
+# {
+#     'name': 'test-deployment',
+#     'namespace': 'platform-enablement',
+#     'replicas': 2,
+#     'version: v0.1.6',
+#     'container': 'ikerry/metrics-node',
+#     'container_port': '8080',
+#     'dns_name': 'nodet.svc.platform.myobdev.com',
+# }
 class IngressManager:
 
     def __init__(self):
@@ -59,52 +69,54 @@ class IngressManager:
             ]
         )
 
-    def create_ingress(self, params):
-        defaultValue = {
-            'name': 'test-deployment',
-            'namespace': 'platform-enablement',
-        }
-        results = dict(defaultValue, **params)
-
+    def create_namespaced_ingress(self, params):
         try:
             return self.extensionApi.create_namespaced_ingress(
-                results['namespace'],
+                params['namespace'],
                 client.ExtensionsV1beta1Ingress(
                     api_version='extensions/v1beta1',
                     kind='Ingress',
-                    metadata=self.get_metadata(results),
-                    spec=self.get_spec(results)
+                    metadata=self.get_metadata(params),
+                    spec=self.get_spec(params)
                 )
             )
         except ApiException as e:
             print(
                 "Exception when calling ExtensionsV1beta1Api->create_namespaced_ingress: %s\n" % e)
 
-    def replace_ingress(self, params):
-        defaultValue = {
-            'name': 'test-deployment',
-            'namespace': 'platform-enablement',
-        }
-        results = dict(defaultValue, **params)
-
+    def replace_namespaced_ingress(self, params):
         try:
             return self.extensionApi.replace_namespaced_ingress(
-                results['name'],
-                results['namespace'],
+                params['name'],
+                params['namespace'],
                 client.ExtensionsV1beta1Ingress(
                     api_version='extensions/v1beta1',
                     kind='Ingress',
-                    metadata=self.get_metadata(results),
-                    spec=self.get_spec(results)
+                    metadata=self.get_metadata(params),
+                    spec=self.get_spec(params)
                 )
             )
         except ApiException as e:
             print(
                 "Exception when calling ExtensionsV1beta1Api->replace_namespaced_ingress: %s\n" % e)
 
-    def apply_ingress(self, params):
+    def apply_namespaced_ingress(self, params):
         if params['name'] in self.list_namespaced_ingress(params['namespace']):
-            self.replace_ingress(params)
+            self.replace_namespaced_ingress(params)
         else:
-            self.create_ingress(params)
-        pass
+            self.create_namespaced_ingress(params)
+
+    def delete_namespaced_ingress(self, params):
+        # No ingress
+        if params['name'] not in self.list_namespaced_ingress(params['namespace']):
+            print("No ingress resource {0} in namespace {1}".format(params['name'], params['namespace']))
+            return True
+
+        try:
+            self.extensionApi.delete_namespaced_ingress(
+                params['name'],
+                params['namespace']
+            )
+        except ApiException as e:
+            print(
+                "Exception when calling ExtensionsV1beta1Api->delete_namespaced_ingress: %s\n" % e)

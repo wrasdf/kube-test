@@ -1,19 +1,13 @@
-import os
-import importlib
+import unittest
+from kube.ingress import IngressManager
+from kube.deployment import DeploymentManager
+from kube.service import ServiceManager
 
-current_dir = os.path.dirname(__file__)
-importlib.machinery.SourceFileLoader("deployment", os.path.join(current_dir, "deployment.py")).load_module()
-importlib.machinery.SourceFileLoader("ingress", os.path.join(current_dir, "ingress.py")).load_module()
-importlib.machinery.SourceFileLoader("service", os.path.join(current_dir, "service.py")).load_module()
-from deployment import DeploymentManager
-from ingress import IngressManager
-from service import ServiceManager
+class TestNamespaceManager(unittest.TestCase):
 
-class DeployManager:
-
-    def __init__(self):
-        self.deployment = DeploymentManager()
-        self.ingress = IngressManager()
+    def setUp(self):
+        self.deployment_manager = DeploymentManager()
+        self.ingress_manager = IngressManager()
         self.service = ServiceManager()
         self.config = {
             'name': 'test-deployment',
@@ -25,17 +19,28 @@ class DeployManager:
             'dns_name': 'nodet.svc.platform.myobdev.com'
         }
 
-    def apply(self):
+    def test_get_simple_app(self):
         self.deployment.apply_namespaced_deployment(self.config)
         self.ingress.apply_namespaced_ingress(self.config)
         self.service.apply_namesapced_service(self.config)
 
-    def delete(self):
+    def tearDown(self):
         self.deployment.delete_namespaced_deployment(self.config)
         self.deployment.delete_namespaced_ingress(self.config)
         self.service.delete_namespaced_service(self.config)
 
+        # Delete tls secret
+        self.secret.delete_namespaced_secret({
+            name: '{0}-tls'.format(self.config['name']),
+            namespace: self.config['namespace']
+        })
 
-# de = DeployManager()
-# de.apply()
-# de.delete()
+if __name__ == '__main__':
+    unittest.main()
+
+
+# - Verify simple app
+#   - deploy 1 simple app
+#   - test endpoints work with TLS
+#   - Then
+#       - teardown apps

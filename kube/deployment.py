@@ -7,6 +7,16 @@ current_dir = os.path.dirname(__file__)
 importlib.machinery.SourceFileLoader("config_manager", os.path.join(current_dir, "config_manager.py")).load_module()
 from config_manager import ConfigManager
 
+# example of params:
+# {
+#     'name': 'test-deployment',
+#     'namespace': 'platform-enablement',
+#     'replicas': 2,
+#     'version: v0.1.6',
+#     'container': 'ikerry/metrics-node',
+#     'container_port': '8080',
+#     'dns_name': 'nodet.svc.platform.myobdev.com',
+# }
 class DeploymentManager:
 
     def __init__(self):
@@ -17,7 +27,6 @@ class DeploymentManager:
         return list(map(lambda x: x.metadata.name, self.appApi.list_namespaced_deployment(namespace).items))
 
     def get_metadata(self, params):
-
         return client.V1ObjectMeta(
             name=params['name'],
             namespace=params['namespace'],
@@ -28,7 +37,6 @@ class DeploymentManager:
         )
 
     def get_spec(self, params):
-
         return client.V1DeploymentSpec(
             replicas=params['replicas'],
             selector=client.V1LabelSelector(
@@ -96,57 +104,41 @@ class DeploymentManager:
             )
         )
 
-    def create_deployment(self, params):
-
-        defaultValue = {
-            'name': 'test-deployment',
-            'namespace': 'platform-enablement',
-            'replicas': 1
-        }
-        results = dict(defaultValue, **params)
-
+    def create_namespaced_deployment(self, params):
         try:
-            return self.appApi.create_namespaced_deployment(results['namespace'], client.V1Deployment(
+            return self.appApi.create_namespaced_deployment(params['namespace'], client.V1Deployment(
                 api_version='apps/v1',
                 kind='Deployment',
-                metadata=self.get_metadata(results),
-                spec=self.get_spec(results)
+                metadata=self.get_metadata(params),
+                spec=self.get_spec(params)
             ))
         except ApiException as e:
-            print(
-                "Exception when calling AppsV1Api -> create_namespaced_deployment: %s\n" % e)
+            print("Exception when calling AppsV1Api -> create_namespaced_deployment: %s\n" % e)
 
-    def replace_deployment(self, params):
-
-        defaultValue = {
-            'name': 'test-deployment',
-            'namespace': 'platform-enablement',
-            'replicas': 1
-        }
-        results = dict(defaultValue, **params)
-
+    def replace_namespaced_deployment(self, params):
         try:
-            return self.appApi.replace_namespaced_deployment(results['name'], results['namespace'], client.V1Deployment(
+            return self.appApi.replace_namespaced_deployment(params['name'], params['namespace'], client.V1Deployment(
                 api_version='apps/v1',
                 kind='Deployment',
-                metadata=self.get_metadata(results),
-                spec=self.get_spec(results)
+                metadata=self.get_metadata(params),
+                spec=self.get_spec(params)
             ))
         except ApiException as e:
-            print(
-                "Exception when calling AppsV1Api -> replace_namespaced_deployment: %s\n" % e)
+            print("Exception when calling AppsV1Api -> replace_namespaced_deployment: %s\n" % e)
 
-    # example of params:
-    # {
-    #     'name': 'test-deployment',
-    #     'namespace': 'platform-enablement',
-    #     'replicas': 2,
-    #     'version: v0.1.6',
-    #     'container': 'ikerry/metrics-node',
-    #     'container_port': '8080',
-    # }
-    def apply_deployment(self, params):
+    def apply_namespaced_deployment(self, params):
         if params['name'] in self.list_namespaced_deployments(params['namespace']):
-            self.replace_deployment(params)
+            self.replace_namespaced_deployment(params)
         else:
-            self.create_deployment(params)
+            self.create_namespaced_deployment(params)
+
+    def delete_namespaced_deployment(self, params):
+        # No deployment
+        if params['name'] not in self.list_namespaced_deployments(params['namespace']):
+            print("No deployment resource {0} in namespace {1}".format(params['name'], params['namespace']))
+            return True
+
+        try:
+            return self.appApi.delete_namespaced_deployment(params['name'], params['namespace'])
+        except ApiException as e:
+            print("Exception when calling AppsV1Api -> delete_namespaced_deployment: %s\n" % e)
