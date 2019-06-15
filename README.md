@@ -10,10 +10,21 @@
   - kube-proxy
   - coredns  
 
-- E2E Cluster tests
-  - istio app in cluster
-  - kiam functionality
-  - operators tests (?)
+- E2E tests
+  - Simple app works in cluster
+  - Istio app in cluster
+  - Kiam functionality
+
+### E2E Test Scenario:
+
+- Verify simple app
+  - deploy 1 simple app
+    - 1 deployment
+    - 1 ingress with TLS enabled
+    - 1 service
+  - curl https with endpoints
+  - Then
+      - teardown apps
 
 ### ToDo scenario:
 
