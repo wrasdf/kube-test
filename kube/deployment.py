@@ -27,12 +27,20 @@ class DeploymentManager:
         return list(map(lambda x: x.metadata.name, self.appApi.list_namespaced_deployment(namespace).items))
 
     def get_metadata(self, params):
+
+        sidecarEnable = 'false'
+        if 'sidecarEnable' in params:
+            sidecarEnable = params['sidecarEnable']
+
         return client.V1ObjectMeta(
             name=params['name'],
             namespace=params['namespace'],
             labels={
                 'app': params['name'],
                 'purpose': 'test'
+            },
+            annotations={
+                "sidecar.istio.io/inject": sidecarEnable
             }
         )
 
@@ -115,20 +123,20 @@ class DeploymentManager:
         except ApiException as e:
             print("Exception when calling AppsV1Api -> create_namespaced_deployment: %s\n" % e)
 
-    def replace_namespaced_deployment(self, params):
+    def patch_namespaced_deployment(self, params):
         try:
-            return self.appApi.replace_namespaced_deployment(params['name'], params['namespace'], client.V1Deployment(
+            return self.appApi.patch_namespaced_deployment(params['name'], params['namespace'], client.V1Deployment(
                 api_version='apps/v1',
                 kind='Deployment',
                 metadata=self.get_metadata(params),
                 spec=self.get_spec(params)
             ))
         except ApiException as e:
-            print("Exception when calling AppsV1Api -> replace_namespaced_deployment: %s\n" % e)
+            print("Exception when calling AppsV1Api -> patch_namespaced_deployment: %s\n" % e)
 
     def apply_namespaced_deployment(self, params):
         if params['name'] in self.list_namespaced_deployments(params['namespace']):
-            self.replace_namespaced_deployment(params)
+            self.patch_namespaced_deployment(params)
         else:
             self.create_namespaced_deployment(params)
 

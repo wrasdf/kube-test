@@ -11,4 +11,4 @@ test: build
 test_in:
 	green ./tests/cluster
 	green ./tests/kube-system
-	green ./tests/kube-e2e
+	# green ./tests/kube-e2e

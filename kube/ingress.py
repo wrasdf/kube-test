@@ -84,9 +84,9 @@ class IngressManager:
             print(
                 "Exception when calling ExtensionsV1beta1Api->create_namespaced_ingress: %s\n" % e)
 
-    def replace_namespaced_ingress(self, params):
+    def patch_namespaced_ingress(self, params):
         try:
-            return self.extensionApi.replace_namespaced_ingress(
+            return self.extensionApi.patch_namespaced_ingress(
                 params['name'],
                 params['namespace'],
                 client.ExtensionsV1beta1Ingress(
@@ -98,11 +98,11 @@ class IngressManager:
             )
         except ApiException as e:
             print(
-                "Exception when calling ExtensionsV1beta1Api->replace_namespaced_ingress: %s\n" % e)
+                "Exception when calling ExtensionsV1beta1Api->patch_namespaced_ingress: %s\n" % e)
 
     def apply_namespaced_ingress(self, params):
         if params['name'] in self.list_namespaced_ingress(params['namespace']):
-            self.replace_namespaced_ingress(params)
+            self.patch_namespaced_ingress(params)
         else:
             self.create_namespaced_ingress(params)
 

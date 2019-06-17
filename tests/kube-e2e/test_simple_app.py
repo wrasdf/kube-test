@@ -20,10 +20,10 @@ class TestNamespaceManager(unittest.TestCase):
             'version': 'v0.1.6',
             'container': 'ikerry/metrics-node',
             'container_port': 8080,
-            'dns_name': 'node1.svc.platform.myobdev.com'
+            'dns_name': 'simple.svc.platform.myobdev.com'
         }
 
-    def test_get_simple_app(self):
+    def test_simple_app(self):
         self.deployment.apply_namespaced_deployment(self.config)
         self.ingress.apply_namespaced_ingress(self.config)
         self.service.apply_namesapced_service(self.config)

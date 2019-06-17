@@ -67,11 +67,26 @@ class ServiceManager:
         except ApiException as e:
             print("Exception when calling CoreV1Api->create_namespaced_service: %s\n" % e)
 
+    def patch_namespaced_service(self, params):
+        try:
+            return self.coreApi.patch_namespaced_service(
+                params['name'],
+                params['namespace'],
+                client.V1Service(
+                    api_version='v1',
+                    kind='Service',
+                    metadata=self.get_metadata(params),
+                    spec=self.get_spec(params)
+                )
+            )
+        except ApiException as e:
+            print("Exception when calling CoreV1Api->patch_namespaced_service: %s\n" % e)
+
     def apply_namesapced_service(self, params):
         if params['name'] in self.list_namespaced_service(params['namespace']):
-            self.delete_namespaced_service(params)
-
-        self.create_namespaced_service(params)
+            self.patch_namespaced_service(params)
+        else:
+            self.create_namespaced_service(params)
 
     def delete_namespaced_service(self, params):
         # No service

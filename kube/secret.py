@@ -42,9 +42,9 @@ class SecretManager:
         except ApiException as e:
             print("Exception when calling CoreV1Api->create_namespaced_secret: %s\n" % e)
 
-    def replace_namespaced_secret(self, params):
+    def patch_namespaced_secret(self, params):
         try:
-            self.coreApi.replace_namespaced_secret(params['namespace'], client.V1Secret(
+            self.coreApi.patch_namespaced_secret(params['namespace'], client.V1Secret(
                 api_version="v1",
                 kind="Secret",
                 metadata=self.get_metadata(params),
@@ -52,11 +52,11 @@ class SecretManager:
                 type="Opaque"
             ))
         except ApiException as e:
-            print("Exception when calling CoreV1Api->replace_namespaced_secret: %s\n" % e)
+            print("Exception when calling CoreV1Api->patch_namespaced_secret: %s\n" % e)
 
     def apply_namespaced_secret(self, params):
         if params['name'] in self.list_namespaced_secret(params['namespace']):
-            self.replace_namespaced_secret(params)
+            self.patch_namespaced_secret(params)
         else:
             self.create_namespaced_secret(params)
 
