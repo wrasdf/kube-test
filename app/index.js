@@ -1,13 +1,12 @@
-const express = require('express')
-const app = express()
-const Prometheus = require('prom-client');
-const log = require('simple-node-logger').createSimpleLogger();
-const port = 8080
-const collectDefaultMetrics = Prometheus.collectDefaultMetrics;
-const ENV = {
-  waittime: process.env.WAITTIME || 3000,
-  iterations: process.env.ITERATIONS || 15
-}
+const express = require('express'),
+      app = express(),
+      Prometheus = require('prom-client'),
+      log = require('simple-node-logger').createSimpleLogger(),
+      port = 8080,
+      collectDefaultMetrics = Prometheus.collectDefaultMetrics,
+      ENV = {
+        iterations: process.env.ITERATIONS || 15
+      };
 
 collectDefaultMetrics({ timeout: 5000 });
 const counter = new Prometheus.Counter({
