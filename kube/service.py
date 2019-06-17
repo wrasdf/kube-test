@@ -26,14 +26,18 @@ class ServiceManager:
     def list_namespaced_service(self, namespace):
         return list(map(lambda x: x.metadata.name, self.coreApi.list_namespaced_service(namespace).items))
 
-    def get_metadata(self, params):
+    def get_labels(self, params, labels={}):
+        return dict({
+            'app': params['name'],
+            'purpose': 'test'
+        }, **labels)
+
+    def get_metadata(self, params, **kwargs):
         return client.V1ObjectMeta(
             name=params['name'],
             namespace=params['namespace'],
-            labels={
-                'app': params['name'],
-                'purpose': 'test'
-            }
+            labels=self.get_labels(params, kwargs.get('labels', {})),
+            annotations=kwargs.get('annotations', {})
         )
 
     def get_spec(self, params):
@@ -46,10 +50,7 @@ class ServiceManager:
                     target_port=params['container_port']
                 )
             ],
-            selector={
-                'app': params['name'],
-                'purpose': 'test'
-            },
+            selector=self.get_labels(params),
             type='ClusterIP'
         )
 

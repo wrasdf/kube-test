@@ -6,7 +6,7 @@ from kube.deployment import DeploymentManager
 from kube.service import ServiceManager
 from kube.secret import SecretManager
 
-class TestNamespaceManager(unittest.TestCase):
+class TestSimpleApp(unittest.TestCase):
 
     def setUp(self):
         self.deployment = DeploymentManager()
@@ -14,11 +14,11 @@ class TestNamespaceManager(unittest.TestCase):
         self.service = ServiceManager()
         self.secret = SecretManager()
         self.config = {
-            'name': 'test-deployment',
+            'name': 'simple_app',
             'namespace': 'platform-enablement',
             'replicas': 1,
-            'version': 'v0.1.6',
-            'container': 'ikerry/metrics-node',
+            'version': 'v0.1.1',
+            'container': 'ikerry/kube-app',
             'container_port': 8080,
             'dns_name': 'simple.svc.platform.myobdev.com'
         }

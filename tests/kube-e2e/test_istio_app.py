@@ -7,7 +7,7 @@ from kube.service import ServiceManager
 from kube.secret import SecretManager
 from kube.exec import EXEC
 
-class TestNamespaceManager(unittest.TestCase):
+class TestIstio(unittest.TestCase):
 
     def setUp(self):
         self.exec = EXEC()
@@ -16,84 +16,80 @@ class TestNamespaceManager(unittest.TestCase):
         self.service = ServiceManager()
         self.secret = SecretManager()
         self.config = {
-            'name': 'node1-deployment',
+            'name': 'istio_apps',
             'namespace': 'platform-enablement',
             'replicas': 1,
-            'version': 'v0.1.6',
-            'container': 'ikerry/metrics-node',
+            'version': 'v0.1.1',
+            'container': 'ikerry/kube-app',
             'container_port': 8080,
             'dns_name': 'node1.svc.platform.myobdev.com'
         }
 
-    def test_istio_app(self):
-
-        # Deploy node1
-        self.deployment.apply_namespaced_deployment(self.config)
-        self.ingress.apply_namespaced_ingress(self.config)
-        self.service.apply_namesapced_service(self.config)
-
-        # # Deploy node2
-        node2Config = dict(self.config, **{
+        self.node1Config = dict(self.config)
+        self.node2Config = dict(self.config, **{
             'name': 'node2-deployment',
             'dns_name': 'node2.svc.platform.myobdev.com'
         })
-        self.deployment.apply_namespaced_deployment(node2Config)
-        self.ingress.apply_namespaced_ingress(node2Config)
-        self.service.apply_namesapced_service(node2Config)
-
-        # Deploy node3
-        node3Config = dict(self.config, **{
+        self.node3Config = dict(self.config, **{
             'name': 'node3-deployment',
             'dns_name': 'node3.svc.platform.myobdev.com',
-            'sidecarEnable': 'true'
+            'developmentAnnotatins': {
+                 "sidecar.istio.io/inject": "true"
+             }
         })
-        self.deployment.apply_namespaced_deployment(node3Config)
-        self.ingress.apply_namespaced_ingress(node3Config)
-        self.service.apply_namesapced_service(node3Config)
-
-        # Deploy node4
-        node4Config = dict(self.config, **{
+        self.node4Config = dict(self.config, **{
             'name': 'node4-deployment',
             'dns_name': 'node4.svc.platform.myobdev.com',
-            'sidecarEnable': 'true'
+            'developmentAnnotatins': {
+                 "sidecar.istio.io/inject": "true"
+             }
         })
-        self.deployment.apply_namespaced_deployment(node4Config)
-        self.ingress.apply_namespaced_ingress(node4Config)
-        self.service.apply_namesapced_service(node4Config)
 
-        # Todo install destination rules for node3 & node4
+        self.nodesConfig = [
+            self.node1Config,
+            self.node2Config,
+            self.node3Config,
+            self.node4Config
+        ]
 
+    def test_istio_app(self):
+
+        for item in self.nodesConfig:
+            self.deployment.apply_namespaced_deployment(item)
+            self.ingress.apply_namespaced_ingress(item)
+            self.service.apply_namesapced_service(item)
 
         # wait for 60 seconds cert-manager to generate tls certs
         time.sleep(60)
+
+        # TODO:
+        # with sidecar could talk to with sidecar
+
+
+        # TODO:
+        # with sidecar could talk to without sidecar
+
+        # TODO:
+        # without sidecar could talk to with sidecar
+
+        # TODO:
+        # without sidecar could talk to without sidecar
+
 
         # response = requests.get("https://{0}/api/v1/health".format(self.config['dns_name']))
         # self.assertEqual(200, response.status_code)
         # self.assertEqual('OK!', response.text)
 
     def tearDown(self):
-        self.deployment.delete_namespaced_deployment(self.config)
-        self.ingress.delete_namespaced_ingress(self.config)
-        self.service.delete_namespaced_service(self.config)
-
-        # Delete tls secret
-        self.secret.delete_namespaced_secret({
-            'name': '{0}-tls'.format(self.config['name']),
-            'namespace': self.config['namespace']
-        })
+        for item in self.nodesConfig:
+            self.deployment.delete_namespaced_deployment(item)
+            self.ingress.delete_namespaced_ingress(item)
+            self.service.delete_namespaced_service(item)
+            # Delete tls secret
+            self.secret.delete_namespaced_secret({
+                'name': '{0}-tls'.format(item['name']),
+                'namespace': item['namespace']
+            })
 
 if __name__ == '__main__':
     unittest.main()
-
-
-# - Verify Istio app
-#   - deploy 2 simple app without sidecar
-#   - deploy 2 simple app with sidecar
-#   - test endpoints work with TLS
-#   - test services level communication works
-#     - with sidecar could talk to with sidecar
-#     - with sidecar could talk to without sidecar
-#     - without sidecar could talk to with sidecar
-#     - without sidecar could talk to without sidecar
-#   - Then
-#       - teardown apps

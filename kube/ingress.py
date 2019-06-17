@@ -28,17 +28,18 @@ class IngressManager:
     def list_namespaced_ingress(self, namespace):
         return list(map(lambda x: x.metadata.name, self.extensionApi.list_namespaced_ingress(namespace).items))
 
-    def get_metadata(self, params):
+    def get_labels(self, params, labels={}):
+        return dict({
+            'app': params['name'],
+            'purpose': 'test'
+        }, **labels)
+
+    def get_metadata(self, params, **kwargs):
         return client.V1ObjectMeta(
             name=params['name'],
             namespace=params['namespace'],
-            labels={
-                'app': params['name'],
-                'purpose': 'test'
-            },
-            annotations={
-                "kubernetes.io/tls-acme": "true"
-            }
+            labels=self.get_labels(params, kwargs.get('labels', {})),
+            annotations=kwargs.get('annotations', {})
         )
 
     def get_spec(self, params):
@@ -76,7 +77,10 @@ class IngressManager:
                 client.ExtensionsV1beta1Ingress(
                     api_version='extensions/v1beta1',
                     kind='Ingress',
-                    metadata=self.get_metadata(params),
+                    metadata=self.get_metadata(
+                        params,
+                        annotations={"kubernetes.io/tls-acme": "true"}
+                    ),
                     spec=self.get_spec(params)
                 )
             )
@@ -92,7 +96,10 @@ class IngressManager:
                 client.ExtensionsV1beta1Ingress(
                     api_version='extensions/v1beta1',
                     kind='Ingress',
-                    metadata=self.get_metadata(params),
+                    metadata=self.get_metadata(
+                        params,
+                        annotations={"kubernetes.io/tls-acme": "true"}
+                    ),
                     spec=self.get_spec(params)
                 )
             )

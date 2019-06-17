@@ -4,7 +4,8 @@ from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 
 current_dir = os.path.dirname(__file__)
-importlib.machinery.SourceFileLoader("config_manager", os.path.join(current_dir, "config_manager.py")).load_module()
+importlib.machinery.SourceFileLoader("config_manager", os.path.join(
+    current_dir, "config_manager.py")).load_module()
 from config_manager import ConfigManager
 
 # example of params:
@@ -16,7 +17,14 @@ from config_manager import ConfigManager
 #     'container': 'ikerry/metrics-node',
 #     'container_port': '8080',
 #     'dns_name': 'nodet.svc.platform.myobdev.com',
+#     'developmentAnnotatins': {
+#          "sidecar.istio.io/inject": "true"
+#      },
+#     'specAnnotaions': : {
+#          "iam.amazonaws.com/role": "arn:aws:iam::<id>:role/k8s/<your-iam-role>"
+#      },
 # }
+
 class DeploymentManager:
 
     def __init__(self):
@@ -26,33 +34,25 @@ class DeploymentManager:
     def list_namespaced_deployments(self, namespace):
         return list(map(lambda x: x.metadata.name, self.appApi.list_namespaced_deployment(namespace).items))
 
-    def get_metadata(self, params):
+    def get_labels(self, params, labels={}):
+        return dict({
+            'app': params['name'],
+            'purpose': 'test'
+        }, **labels)
 
-        sidecarEnable = 'false'
-        if 'sidecarEnable' in params:
-            sidecarEnable = params['sidecarEnable']
-
+    def get_metadata(self, params, **kwargs):
         return client.V1ObjectMeta(
             name=params['name'],
             namespace=params['namespace'],
-            labels={
-                'app': params['name'],
-                'purpose': 'test'
-            },
-            annotations={
-                "sidecar.istio.io/inject": sidecarEnable
-            }
+            labels=self.get_labels(params, kwargs.get('labels', {})),
+            annotations=kwargs.get('annotations', {})
         )
 
     def get_spec(self, params):
+
         return client.V1DeploymentSpec(
             replicas=params['replicas'],
-            selector=client.V1LabelSelector(
-                match_labels={
-                    'app': params['name'],
-                    'purpose': 'test'
-                }
-            ),
+            selector=client.V1LabelSelector(match_labels=self.get_labels(params)),
             strategy=client.V1DeploymentStrategy(
                 type='RollingUpdate',
                 rolling_update=client.V1RollingUpdateDeployment(
@@ -61,11 +61,9 @@ class DeploymentManager:
                 )
             ),
             template=client.V1PodTemplateSpec(
-                metadata=client.V1ObjectMeta(
-                    labels={
-                        'app': params['name'],
-                        'purpose': 'test'
-                    }
+                metadata=self.get_metadata(
+                    params,
+                    annotations=params.get('specAnnotaions', {})
                 ),
                 spec=client.V1PodSpec(
                     containers=[
@@ -117,22 +115,30 @@ class DeploymentManager:
             return self.appApi.create_namespaced_deployment(params['namespace'], client.V1Deployment(
                 api_version='apps/v1',
                 kind='Deployment',
-                metadata=self.get_metadata(params),
+                metadata=self.get_metadata(
+                    params,
+                    annotations=params.get('developmentAnnotatins', {})
+                ),
                 spec=self.get_spec(params)
             ))
         except ApiException as e:
-            print("Exception when calling AppsV1Api -> create_namespaced_deployment: %s\n" % e)
+            print(
+                "Exception when calling AppsV1Api -> create_namespaced_deployment: %s\n" % e)
 
     def patch_namespaced_deployment(self, params):
         try:
             return self.appApi.patch_namespaced_deployment(params['name'], params['namespace'], client.V1Deployment(
                 api_version='apps/v1',
                 kind='Deployment',
-                metadata=self.get_metadata(params),
+                metadata=self.get_metadata(
+                    params,
+                    annotations=params.get('developmentAnnotatins', {})
+                ),
                 spec=self.get_spec(params)
             ))
         except ApiException as e:
-            print("Exception when calling AppsV1Api -> patch_namespaced_deployment: %s\n" % e)
+            print(
+                "Exception when calling AppsV1Api -> patch_namespaced_deployment: %s\n" % e)
 
     def apply_namespaced_deployment(self, params):
         if params['name'] in self.list_namespaced_deployments(params['namespace']):
@@ -143,10 +149,12 @@ class DeploymentManager:
     def delete_namespaced_deployment(self, params):
         # No deployment
         if params['name'] not in self.list_namespaced_deployments(params['namespace']):
-            print("No deployment resource {0} in namespace {1}".format(params['name'], params['namespace']))
+            print("No deployment resource {0} in namespace {1}".format(
+                params['name'], params['namespace']))
             return True
 
         try:
             return self.appApi.delete_namespaced_deployment(params['name'], params['namespace'])
         except ApiException as e:
-            print("Exception when calling AppsV1Api -> delete_namespaced_deployment: %s\n" % e)
+            print(
+                "Exception when calling AppsV1Api -> delete_namespaced_deployment: %s\n" % e)

@@ -1,0 +1,16 @@
+{
+  "name": "nodejs-app",
+  "version": "1.0.0",
+  "description": "NodeJs app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Kerry.Wang@myob.com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "prom-client": "^10.2.3",
+    "simple-node-logger": "^18.12.22"
+  }
+}
