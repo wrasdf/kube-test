@@ -14,7 +14,7 @@ class TestSimpleApp(unittest.TestCase):
         self.service = ServiceManager()
         self.secret = SecretManager()
         self.config = {
-            'name': 'simple_app',
+            'name': 'simple-app',
             'namespace': 'platform-enablement',
             'replicas': 1,
             'version': 'v0.1.1',
