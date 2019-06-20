@@ -47,6 +47,21 @@
   - Then
     - teardown the app
 
+- Verify SQS operator works
+  - Apply crd in our cluster
+  - app could send message to SQS
+  - app could read message from SQS    
+  - Then
+    - Teardwon the app
+
+- Verify Postgres operator works
+  - Apply crd in our cluster
+  - wait create the rds in AWS
+  - app connect to rds with secret
+  - Then
+    - teardwon the app    
+    - Delete the rds instance
+
 ### How to run the tests
 
 - $ make test
