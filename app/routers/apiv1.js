@@ -32,14 +32,14 @@ router.get('/504', (request, response) => {
 router.get('/largeresp', (request, response) => {
   var text = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var iterations = parseInt(Math.floor(Math.random() * 30) + 15);
+  var iterations = parseInt(Math.floor(Math.random() * 15) + 1);
 
   for (let i=0, len=possible.length; i<len; i++ ){
     text += possible + Math.random()
   }
 
-  for (var i = 0; i < iterations; i++) {
-    text += text;
+  for (let i = 0; i < iterations; i++) {
+    text += text
   }
 
   response.send(text)
