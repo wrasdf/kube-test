@@ -35,6 +35,8 @@ class TestKiam(unittest.TestCase):
 
     def tearDown(self):
         self.deployment.delete_namespaced_deployment(self.config)
+        # TODO
+        # awscli delete s3 bucket and data
 
 if __name__ == '__main__':
     unittest.main()

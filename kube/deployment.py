@@ -80,7 +80,7 @@ class DeploymentManager:
                             ],
                             liveness_probe=client.V1Probe(
                                 http_get=client.V1HTTPGetAction(
-                                    path='/api/v1/health',
+                                    path='/health',
                                     port=params['container_port']
                                 ),
                                 initial_delay_seconds=5,
@@ -88,7 +88,7 @@ class DeploymentManager:
                             ),
                             readiness_probe=client.V1Probe(
                                 http_get=client.V1HTTPGetAction(
-                                    path='/api/v1/health',
+                                    path='/health',
                                     port=params['container_port']
                                 ),
                                 initial_delay_seconds=5,

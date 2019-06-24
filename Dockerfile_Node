@@ -2,7 +2,7 @@ FROM node:carbon-slim
 
 WORKDIR /app
 COPY app/package.json app/*yarn* /app/
-RUN yarn install
+RUN yarn
 
 COPY app /app
 EXPOSE 8080

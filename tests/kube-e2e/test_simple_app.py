@@ -31,7 +31,7 @@ class TestSimpleApp(unittest.TestCase):
         # wait for 60 seconds cert-manager to generate tls certs
         time.sleep(60)
 
-        response = requests.get("https://{0}/api/v1/health".format(self.config['dns_name']))
+        response = requests.get("https://{0}/health".format(self.config['dns_name']))
         self.assertEqual(200, response.status_code)
         self.assertEqual('OK!', response.text)
 

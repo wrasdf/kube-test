@@ -9,8 +9,9 @@
   "author": "Kerry.Wang@myob.com",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.2",
-    "prom-client": "^10.2.3",
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "prom-client": "^11.5.2",
     "simple-node-logger": "^18.12.22"
   }
 }

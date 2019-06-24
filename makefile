@@ -3,7 +3,7 @@ build-node:
 	@docker build -t kube-app:latest -f Dockerfile_Node .
 
 run-node: build-node
-	@docker run --rm -d \
+	@docker run --rm \
 	 	-p 8080:8080 \
 	  -v $(HOME)/.aws:/root/.aws \
     kube-app:latest
