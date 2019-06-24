@@ -1,9 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const log = require('simple-node-logger').createSimpleLogger()
+const controller = require('../controllers/s3')
 
-router.get('/list', (request, response) => {
-    response.send("hello s3 list")
-})
+router.get('/list', controller.listBuckets)
+router.post('/:Bucket', controller.createBucket)
+router.delete('/:Bucket', controller.deleteBucket)
+router.post('/:Bucket/:Key', controller.createObject)
+router.get('/:Bucket/:Key', controller.getObject)
+router.put('/:Bucket/:Key', controller.putObject)
+router.delete('/:Bucket/:Key', controller.deleteObject)
 
 module.exports = router;
