@@ -26,14 +26,15 @@
   - Then
       - teardown apps
 
-### ToDo scenario:
-
 - Verify Kiam works
   - Deploy a pod with IAM role
   - The pod could put data into s3 bucket
   - Use AWS SDK check s3 bucket content
   - Then
     - teardown the app
+    - delete s3 bucket
+
+### ToDo scenario:
 
 - Verify SQS operator works
   - Apply crd in our cluster
@@ -69,3 +70,4 @@
 ### How to debug and run in container
 
 - $ make sh
+- $ make sh-node
