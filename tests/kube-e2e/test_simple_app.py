@@ -17,7 +17,7 @@ class TestSimpleApp(unittest.TestCase):
             'name': 'simple-app',
             'namespace': 'platform-enablement',
             'replicas': 1,
-            'version': 'v0.1.1',
+            'version': 'v0.1.5',
             'container': 'ikerry/kube-app',
             'container_port': 8080,
             'dns_name': 'simple.svc.platform.myobdev.com'
