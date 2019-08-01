@@ -1,4 +1,4 @@
-FROM node:carbon-slim
+FROM node:12-alpine
 
 WORKDIR /app
 COPY app/package.json app/*yarn* /app/

@@ -3,8 +3,16 @@ const router = express.Router()
 const log = require('simple-node-logger').createSimpleLogger()
 
 router.get('/', (request, response) => {
+  response.setHeader("Content-Type", "text/html");
   response.send(`
-      <h2> Hello demo app ------- ! </h2>
+    <!doctype html>
+    <html lang="">
+    <head>
+      <meta charset="utf-8">
+      <title>Kube Demo App With Metrics</title>
+    </head>
+    <body>
+      <h2> Kube Demo App With Metrics ------- ! </h2>
       <ul>
         <li> /metrics  --> will return prometheus nodejs metrics </li>
         <li> /health --> will retrun healthy status </li>
@@ -12,8 +20,10 @@ router.get('/', (request, response) => {
         <li> /api/v1/504 --> will return 504 error </li>
         <li> /api/v1/499 --> will return 499 error </li>
         <li> /api/v1/largeresp --> will return largeresp </li>
-        <li> /s3/list --> list all the s3 bucket </li>
+        <li> /s3/v1/list --> list all the s3 bucket </li>
       </ul>
+    </body>
+    </html>
     `)
   log.info('index page accepted at ', new Date().toJSON());
 })

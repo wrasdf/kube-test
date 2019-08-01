@@ -2,7 +2,10 @@
 build-node:
 	@docker build -t kube-app:latest -f Dockerfile_Node .
 
-run-node: build-node
+stop:
+	@docker stop $(shell docker ps -qa)
+
+run-node: build-node stop
 	@docker run --rm -d \
 	 	-p 8080:8080 \
 	  -v $(HOME)/.aws:/root/.aws \
@@ -21,6 +24,7 @@ sh-node: build-node
 push-node-%: build-node
 	@docker tag kube-app:latest ikerry/kube-app:$(*)
 	@docker push ikerry/kube-app:$(*)
+
 
 # python test
 build:

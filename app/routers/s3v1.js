@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const controller = require('../controllers/s3')
+const controller = require('../controllers/s3v1')
 
 router.get('/list', controller.listBuckets)
 router.post('/:Bucket', controller.createBucket)

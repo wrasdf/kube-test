@@ -1,11 +1,12 @@
 const log = require('simple-node-logger').createSimpleLogger()
-const service = require('../services/s3')
+const service = require('../services/s3v1')
 const merge = require('deepmerge')
 
 module.exports = {
 
   listBuckets: (request, response) => {
     service.listBuckets().then(data => {
+      log.info(data)
       response.status(200).send(`{"status: success", "data": "[${data.Buckets}]"}`)
     }).catch(err => {
       log.error(err)

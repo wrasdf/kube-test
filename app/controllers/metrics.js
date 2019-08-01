@@ -49,7 +49,7 @@ module.exports = {
     app.use(requestCounters)
     app.use(responseCounters)
     app.get('/metrics', (req, res) => {
-      res.set('Content-Type', Register.contentType);
+      res.setHeader('Content-Type', Register.contentType);
       res.end(Register.metrics());
     });
   }
