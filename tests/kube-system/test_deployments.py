@@ -1,5 +1,5 @@
 import unittest
-from kube.deployment import DeploymentManager
+from kube.utils.deployment import DeploymentManager
 
 must_have_deploys = [
     # system
@@ -38,7 +38,7 @@ class TestDeploymentsManager(unittest.TestCase):
         self.namespace = 'kube-system'
 
     def test_kube_system_deployment(self):
-        self.kube_system_deploys = self.deploy_manager.list_namespaced_deployments(self.namespace)
+        self.kube_system_deploys = self.deploy_manager.list(self.namespace)
         for deploy in must_have_deploys:
             self.assertIn(deploy, self.kube_system_deploys)
 

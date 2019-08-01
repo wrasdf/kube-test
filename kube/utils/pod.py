@@ -13,5 +13,5 @@ class PodManager:
         ConfigManager()
         self.api = client.CoreV1Api()
 
-    def list_namespaced_pods(self, namespace):
+    def list(self, namespace):
         return self.api.list_namespaced_pod(namespace, watch=False).items

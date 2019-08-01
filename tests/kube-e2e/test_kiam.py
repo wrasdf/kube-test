@@ -19,7 +19,7 @@ class TestKiam(unittest.TestCase):
             'name': 'simple-app',
             'namespace': 'platform-enablement',
             'replicas': 1,
-            'version': 'v0.1.5',
+            'version': 'v0.1.6',
             'container': 'ikerry/kube-app',
             'container_port': 8080,
             'dns_name': 'simple.svc.platform.myobdev.com'
@@ -36,8 +36,8 @@ class TestKiam(unittest.TestCase):
         # wait for 60 seconds cert-manager to generate tls certs
         time.sleep(60)
 
-        createBucketRes = requests.post("https://{0}/s3/{1}".format(self.config['dns_name'], self.bucket))
-        putBucketObjectRes = requests.put("https://{0}/s3/{1}/{2}".format(self.config['dns_name'], self.bucket, self.key), data={'data':'{0}'.format(self.content)})
+        createBucketRes = requests.post("https://{0}/s3/v1/{1}".format(self.config['dns_name'], self.bucket))
+        putBucketObjectRes = requests.put("https://{0}/s3/v1/{1}/{2}".format(self.config['dns_name'], self.bucket, self.key), data={'data':'{0}'.format(self.content)})
         bucket = self.exec('aws s3 ls | grep %s | awk "{print $3}"' % self.bucket)
         # TODO
         # Need to get data
