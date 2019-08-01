@@ -1,10 +1,10 @@
 FROM node:12-alpine
 
 WORKDIR /app
-COPY app/package.json app/*yarn* /app/
+COPY package.json *yarn* /app/
 RUN yarn
 
-COPY app /app
+COPY . /app
 EXPOSE 8080
 
 ENTRYPOINT ["yarn", "start"]

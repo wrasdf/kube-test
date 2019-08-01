@@ -8,23 +8,6 @@ importlib.machinery.SourceFileLoader("config_manager", os.path.join(
     current_dir, "./config_manager.py")).load_module()
 from config_manager import ConfigManager
 
-# example of params:
-# {
-#     'name': 'test-deployment',
-#     'namespace': 'platform-enablement',
-#     'replicas': 2,
-#     'version: v0.1.6',
-#     'container': 'ikerry/metrics-node',
-#     'container_port': '8080',
-#     'dns_name': 'nodet.svc.platform.myobdev.com',
-#     'developmentAnnotatins': {
-#          "sidecar.istio.io/inject": "true"
-#      },
-#     'specAnnotaions': : {
-#          "iam.amazonaws.com/role": "arn:aws:iam::<id>:role/k8s/<your-iam-role>"
-#      },
-# }
-
 class DeploymentManager:
 
     def __init__(self):

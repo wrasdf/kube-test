@@ -1,0 +1,28 @@
+{{#onboarding.hpa.enable}}
+---
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2beta1
+metadata:
+  name: {{onboarding.name}}
+  namespace: {{onboarding.namespace}}
+  labels:
+    app: {{onboarding.name}}
+    repo: {{onboarding.repo}}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{onboarding.name}}
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: External
+    external:
+      # this is the metrics you need to provide
+      metricName: jupiter_http_requests_per_second
+      # this says that if the average number of requests per second over the last 5 minutes is greater than 10, then scale up
+      targetAverageValue: 10
+      metricSelector:
+        matchLabels:
+          ingress: {{onboarding.name}}
+{{/onboarding.hpa.enable}}

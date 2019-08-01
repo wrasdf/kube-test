@@ -1,0 +1,18 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{onboarding.name}}
+  namespace: {{onboarding.namespace}}
+  labels:
+    app: {{onboarding.name}}
+    repo: {{onboarding.repo}}
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: {{onboarding.containerPort}}
+  selector:
+    app: {{onboarding.name}}
+    repo: {{onboarding.repo}}

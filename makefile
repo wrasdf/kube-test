@@ -1,25 +1,17 @@
 # App
 build-node:
-	@docker build -t kube-app:latest -f Dockerfile_Node .
+	cd ./app && docker build -t kube-test:latest .
 
 stop:
 	@docker stop $(shell docker ps -qa)
 
-run-node: build-node stop
-	@docker run --rm -d \
-	 	-p 8080:8080 \
-	  -v $(HOME)/.aws:/root/.aws \
-    kube-app:latest
+run-node: stop
+	@docker-compose build node
+	@docker-compose run --rm -d -p 8080:8080 node
 
-sh-node: build-node
-	@docker run --rm -it \
-		-p 8080:8080 \
-		-v $(HOME)/.aws:/root/.aws \
-		-v $(HOME)/.kube:/root/.kube \
-		-v $$(pwd)/app:/app \
-		-v /app/node_modules \
-		--entrypoint "sh" \
-		kube-app:latest
+sh-node: stop
+	@docker-compose build sh-node
+	@docker-compose run sh-node
 
 push-node-%: build-node
 	@docker tag kube-app:latest ikerry/kube-app:$(*)
@@ -30,20 +22,13 @@ push-node-%: build-node
 build:
 	@docker build -t kube-test:latest .
 
-sh: build
-	@docker run --rm -it \
-		-v $(HOME)/.aws:/root/.aws \
-		-v $(HOME)/.kube:/root/.kube \
-		-v $$(pwd):/app \
-		--entrypoint "/bin/sh" \
-		kube-test:latest
+sh:
+	@docker-compose build sh
+	@docker-compose run sh
 
-test: build
-	@docker run --rm \
-		-v $(HOME)/.aws:/root/.aws \
-		-v $(HOME)/.kube:/root/.kube \
-		-v $$(pwd):/app \
-		kube-test:latest make test_in
+test:
+	@docker-compose build pytest
+	@docker-compose run --rm pytest
 
 test_in:
 	green ./tests/cluster
