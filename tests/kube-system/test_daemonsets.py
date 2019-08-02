@@ -1,5 +1,5 @@
 import unittest
-from kube.daemonset import DaemonsetManager
+from kube.utils.daemonset import DaemonsetManager
 
 must_have_daemonsets = [
     'cadvisor',
@@ -20,7 +20,7 @@ class TestDaemonsetsManager(unittest.TestCase):
         self.namespace = 'kube-system'
 
     def test_kube_system_daemonsets(self):
-        self.kube_system_daemonsets = self.daemonset_manager.list_namespaced_daemonsets(self.namespace)
+        self.kube_system_daemonsets = self.daemonset_manager.list(self.namespace)
         for daemonsets in must_have_daemonsets:
             self.assertIn(daemonsets, self.kube_system_daemonsets)
 

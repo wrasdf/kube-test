@@ -1,0 +1,52 @@
+---
+version: '3.6'
+
+services:
+
+  ntpl:
+    image: ikerry/ntpl:v0.4.4
+    working_dir: /app
+    volumes:
+      - ".:/app"
+      - "$HOME/.kube:/root/.kube"
+
+  kubectl:
+    image: lachlanevenson/k8s-kubectl:v1.15.0
+    working_dir: /app
+    volumes:
+      - ".:/app"
+      - "$HOME/.kube:/root/.kube"
+
+  node: &nodebase
+    build:
+      context: app
+    volumes:
+      - "./app:/app"
+      - /app/node_modules
+      - "$HOME/.aws:/root/.aws"
+    ports:
+      - "8080:8080"
+    entrypoint:
+      - "yarn"
+      - "start"
+
+  sh-node:
+    <<: *nodebase
+    entrypoint:
+      - "sh"
+
+  pytest: &pybase
+    build:
+      context: .
+    volumes:
+      - ".:/app"
+      - "$HOME/.aws:/root/.aws"
+      - "$HOME/.kube:/root/.kube"
+    entrypoint:
+      - "make"
+      - "test_in"
+
+  sh:
+    <<: *pybase
+    entrypoint:
+      - "sh"

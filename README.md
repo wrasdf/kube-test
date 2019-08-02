@@ -12,7 +12,6 @@
 
 - E2E tests
   - Simple app works in cluster
-  - Istio app in cluster
   - Kiam functionality
 
 ### E2E Test Scenario:
@@ -51,7 +50,7 @@
     - teardwon the app    
     - Delete the rds instance
 
-- Verify Istio app (Maybe we should trust the istio)
+- Verify Istio app ??(Maybe we should trust the istio)
   - deploy 2 simple app without sidecar
   - deploy 2 simple app with sidecar
   - test endpoints work with TLS
@@ -63,7 +62,7 @@
   - Then
       - teardown apps
 
-### How to run the tests
+### How to run the kube tests
 
 - $ make test
 

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js"
   },
-  "author": "Kerry.Wang@myob.com",
+  "author": "wrasdf@gmail.com",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.480.0",
@@ -17,6 +17,6 @@
     "nodemon": "^1.19.1",
     "prom-client": "^11.5.2",
     "response-time": "^2.3.2",
-    "simple-node-logger": "^18.12.22"
+    "simple-node-logger": "^18.12.23"
   }
 }

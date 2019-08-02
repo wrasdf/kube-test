@@ -7,11 +7,11 @@ importlib.machinery.SourceFileLoader("config_manager", os.path.join(current_dir,
 from config_manager import ConfigManager
 
 
-class NamespaceManager:
+class DaemonsetManager:
 
     def __init__(self):
         ConfigManager()
-        self.api = client.CoreV1Api()
+        self.api = client.ExtensionsV1beta1Api()
 
-    def list_all_namespaces(self):
-        return list(map(lambda x: x.metadata.name, self.api.list_namespace().items))
+    def list(self, namespace):
+        return list(map(lambda x: x.metadata.name, self.api.list_namespaced_daemon_set(namespace).items))

@@ -1,5 +1,5 @@
 import unittest
-from kube.pod import PodManager
+from kube.utils.pod import PodManager
 
 class TestPodsManager(unittest.TestCase):
 
@@ -8,7 +8,7 @@ class TestPodsManager(unittest.TestCase):
         self.namespace = 'kube-system'
 
     def test_kube_system_pods_healthy(self):
-        kube_system_pods = self.pod_manager.list_namespaced_pods(self.namespace)
+        kube_system_pods = self.pod_manager.list(self.namespace)
         results = ['Running', 'Succeeded']
         for pod in kube_system_pods:
             statusResult = pod.status.phase in results

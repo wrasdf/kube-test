@@ -2,7 +2,7 @@ import subprocess
 
 class EXEC:
 
-    def exec_sh(self, cmd):
+    def sh(self, cmd):
         try:
             output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
             print(output)

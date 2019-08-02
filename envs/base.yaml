@@ -1,0 +1,14 @@
+---
+onboarding:
+  name: kube-app
+  namespace: platform-enablement
+  repo: kube-test
+  container: ikerry/kube-app
+  containerPort: 8080
+  version: v0.1.6  
+  istio:
+    enable: false
+  hpa:
+    enable: false
+  pdb:
+    enable: false
