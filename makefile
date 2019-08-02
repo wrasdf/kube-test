@@ -22,15 +22,15 @@ push-node-%: build-node
 build:
 	@docker build -t kube-test:latest .
 
-sh:
+sh-%:
+	./bin/compile.sh $(*) onboarding
 	@docker-compose build sh
 	@docker-compose run sh
 
-test:
-	@docker-compose build pytest
-	@docker-compose run --rm pytest
+test-%:
+	./bin/e2e_test.sh $(*) onboarding
 
 test_in:
 	green ./tests/cluster
 	green ./tests/kube-system
-	# green ./tests/kube-e2e
+	green ./tests/kube-e2e

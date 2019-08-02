@@ -5,8 +5,7 @@ onboarding:
   repo: kube-test
   container: ikerry/kube-app
   containerPort: 8080
-  version: v0.1.6
-  dns_name: kube-app.svc.europa-stg.jupiter.myobdev.com
+  version: v0.1.6  
   istio:
     enable: false
   hpa:

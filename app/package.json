@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js"
   },
-  "author": "Kerry.Wang@myob.com",
+  "author": "wrasdf@gmail.com",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.480.0",

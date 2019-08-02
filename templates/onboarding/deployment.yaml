@@ -40,14 +40,14 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /api/v1/health
+              path: /health
               port: {{onboarding.containerPort}}
             initialDelaySeconds: 10
             timeoutSeconds: 10
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /api/v1/health
+              path: /health
               port: {{onboarding.containerPort}}
             initialDelaySeconds: 10
             timeoutSeconds: 10
