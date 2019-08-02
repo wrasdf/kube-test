@@ -1,6 +1,7 @@
 import unittest
 import time
 import requests
+import json
 from kube.utils.exec import EXEC
 
 class TestKiam(unittest.TestCase):
@@ -26,8 +27,9 @@ class TestKiam(unittest.TestCase):
         # putObjectRes = requests.put(f"https://{self.dns_name}/s3/v1/{self.bucket}/{self.key}", data={'data':f'{self.content}'})
         getObjectRes = requests.get(f"https://{self.dns_name}/s3/v1/{self.bucket}/{self.key}")
         print(getObjectRes.text)
-        print(getObjectRes.headers['content-type'])
-
+        # print(getObjectRes.headers['content-type'])
+        s = json.loads(getObjectRes.text)
+        print(s["data"])
         # then
         # self.exec.sh(f'aws s3api get-object --bucket {self.bucket} --key {self.key} {self.key}')
         # content = self.exec.sh(f'cat {self.key}')
