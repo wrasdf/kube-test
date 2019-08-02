@@ -30,6 +30,7 @@ spec:
       {{#onboarding.istio.enable}}
         sidecar.istio.io/inject: "true"
       {{/onboarding.istio.enable}}
+        iam.amazonaws.com/role: arn:aws:iam::850603229734:role/k8s/testRoleForKubeApp
     spec:
       containers:
         - name: {{onboarding.name}}

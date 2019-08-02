@@ -6,8 +6,8 @@ module.exports = {
 
   listBuckets: (request, response) => {
     service.listBuckets().then(data => {
-      log.info(data)
-      response.status(200).send(`{"status: success", "data": "[${data.Buckets}]"}`)
+      results = JSON.stringify(data.Buckets)
+      response.status(200).send(`{"status: success", "data": "${results}"}`)
     }).catch(err => {
       log.error(err)
       response.status(err.statusCode).send(`{"status: failed", "data": "${err.message}"`)

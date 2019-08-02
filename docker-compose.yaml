@@ -17,6 +17,16 @@ services:
       - ".:/app"
       - "$HOME/.kube:/root/.kube"
 
+  stackup:
+    image: realestate/stackup:latest
+    volumes:
+      - "$HOME/.aws:/root/.aws"
+      - ".:/app"
+    working_dir: /app
+    entrypoint: stackup
+    environment:
+      - AWS_DEFAULT_REGION=ap-southeast-2
+
   node: &nodebase
     build:
       context: app

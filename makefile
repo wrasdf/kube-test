@@ -17,6 +17,9 @@ push-node-%: build-node
 	@docker tag kube-app:latest ikerry/kube-app:$(*)
 	@docker push ikerry/kube-app:$(*)
 
+# CFN
+cfn:
+	@docker-compose run --rm stackup test-role-for-kube-app up -t cfns/template.yaml
 
 # python test
 build:
@@ -31,6 +34,6 @@ test-%:
 	./bin/e2e_test.sh $(*) onboarding
 
 test_in:
-	green ./tests/cluster
-	green ./tests/kube-system
+	# green ./tests/cluster
+	# green ./tests/kube-system
 	green ./tests/kube-e2e
