@@ -39,6 +39,11 @@ class TestSimpleApp(unittest.TestCase):
         self.assertEqual(200, putObjectRes.status_code)
         self.assertEqual(getObjectRes.json()["data"], self.content)
 
+        # clean
+        requests.delete(f"https://{self.dns_name}/s3/v1/{self.bucket}/{self.key}")
+        requests.delete(f"https://{self.dns_name}/s3/v1/{self.bucket}")
+
+
     @classmethod
     def tearDownClass(cls):
         # delete app
