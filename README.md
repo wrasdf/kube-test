@@ -70,4 +70,3 @@
 ### How to debug and run in container
 
 - $ make sh
-- $ make sh-node

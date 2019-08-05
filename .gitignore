@@ -1,5 +1,4 @@
 */**/__pycache__/
 *.pyc
-app/node_modules
 _build
-test.txt
+_cfns_build
