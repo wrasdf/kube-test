@@ -8,10 +8,10 @@
   - kube-scheduler
   - kube-controller-manager
   - kube-proxy
-  - coredns  
+  - coredns
 
 - E2E tests
-  - Simple app works in cluster
+  - Simple app works with cert-manager
   - Kiam functionality
 
 ### E2E Test Scenario:
@@ -62,9 +62,10 @@
   - Then
       - teardown apps
 
-### How to run the kube tests
+### How to run the kube tests for different envs
 
-- $ make test
+- $ make test-europa-stg
+- $ make test-dev-green
 
 ### How to debug and run in container
 
