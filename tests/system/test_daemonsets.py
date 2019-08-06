@@ -4,6 +4,21 @@ from kube.utils.daemonset import DaemonsetManager
 
 must_have = [
     {
+        'cluster': 'europa-stg',
+        'namespace': 'kube-system',
+        'pods': [
+            'cadvisor',
+            'canal',
+            'cloudsmith-login',
+            'kiam-agent',
+            'kiam-server',
+            'kube-logging',
+            'kube-proxy',
+            'node-problem-detector',
+            'prometheus-node-exporter'
+        ]
+    },
+    {
         'cluster': 'dev-green',
         'namespace': 'kube-system',
         'pods': [
@@ -31,6 +46,7 @@ class TestDaemonsetsManager(unittest.TestCase):
             if item['cluster'] == self.cluster:
                 daemonsets = self.daemonset_manager.list(item['namespace'])
                 for pod in item['pods']:
+                    print(f'daemonsets -> {self.cluster} {item["namespace"]}: {pod}')
                     self.assertIn(pod, daemonsets)
 
 if __name__ == '__main__':

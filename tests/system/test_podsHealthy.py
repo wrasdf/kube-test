@@ -32,7 +32,7 @@ class TestPodsManager(unittest.TestCase):
                     system_pods = self.pod_manager.list(ns)
                     results = ['Running', 'Succeeded']
                     for pod in system_pods:
-                        print(f'In {ns}: {pod.metadata.name}')
+                        print(f'pod -> {self.cluster} {ns}: {pod.metadata.name}')
                         statusResult = pod.status.phase in results
                         if statusResult is False:
                             print(pod.status)
