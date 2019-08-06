@@ -15,5 +15,5 @@ test-%:
 
 test_in:
 	green ./tests/cluster
-	green ./tests/kube-system
+	green ./tests/system
 	green ./tests/kube-e2e

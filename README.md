@@ -1,6 +1,6 @@
 ### Goal of this repo
 
-- Test kube-system namespace
+- Test kube-* namespace, eg: kube-system, kube-monitor, kube-ingress
   - Check the pods are running
   - Detect the existence of any Crash Loops
 
@@ -33,6 +33,21 @@
     - teardown the app
     - delete s3 bucket
 
+
+### How to run the kube tests for different envs
+
+- $ make test-europa-stg
+- $ make test-dev-green
+
+### How to debug and run in container
+
+- $ make sh
+
+
+### Ref for the kube-app
+- https://github.com/wrasdf/kube-app
+
+
 ### ToDo scenario:
 
 - Verify SQS operator works
@@ -61,12 +76,3 @@
     - without sidecar could talk to without sidecar
   - Then
       - teardown apps
-
-### How to run the kube tests for different envs
-
-- $ make test-europa-stg
-- $ make test-dev-green
-
-### How to debug and run in container
-
-- $ make sh

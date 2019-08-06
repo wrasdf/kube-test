@@ -12,4 +12,4 @@ dns_name=$3
 
 ./bin/compile.sh $cluster $component
 docker-compose build pytest
-docker-compose run --rm -e dns_name=$dns_name pytest
+docker-compose run --rm -e dns_name=$dns_name -e cluster=$cluster pytest
