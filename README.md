@@ -41,7 +41,7 @@
 
 ### How to debug and run in container
 
-- $ make sh
+- $ make sh-europa-stg
 
 
 ### Ref for the kube-app
