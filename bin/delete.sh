@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [ "$#" -lt 2 ]; then
-  echo "Usage: bin/delete.sh <cluster env> <component>"
+  echo "Usage: bin/compile.sh <cluster env> <component>"
   exit 1
 fi
 

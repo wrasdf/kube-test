@@ -12,7 +12,7 @@ class TestSimpleApp(unittest.TestCase):
         cls.exec.sh('kubectl apply --dry-run -f _build/onboarding/')
         cls.exec.sh('kubectl apply -f _build/onboarding/')
 
-        # # wait for 60 seconds cert-manager to generate tls certs
+        # wait for 60 seconds cert-manager to generate tls certs
         time.sleep(60)
 
 
@@ -20,7 +20,7 @@ class TestSimpleApp(unittest.TestCase):
         self.bucket = 'myob-test-kube-app'
         self.key = 'test.txt'
         self.content = 'Send Data By API'
-        self.dns_name = os.getenv('dns_name', 'kube-app.svc.europa-stg.jupiter.myobdev.com')
+        self.dns_name = os.getenv('dns_name', 'kube-app.svc.europa-stg.jupiter.myobdev.com').strip()
 
     def test_simple_app(self):
         # when

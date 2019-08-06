@@ -3,11 +3,10 @@ cfn:
 	@docker-compose run --rm ctpl apply -n test-role-for-kube-app -c role
 
 sh-%:
-	@docker-compose build sh
-	@docker-compose run sh
+	./bin/sh.sh $(*) onboarding
 
 test-%:
-	./bin/e2e_test.sh $(*) onboarding
+	./bin/test.sh $(*) onboarding
 
 test_in:
 	green ./tests/cluster
