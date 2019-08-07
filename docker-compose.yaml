@@ -4,7 +4,7 @@ version: '3.6'
 services:
 
   ntpl:
-    image: ikerry/ntpl:v1.0.0
+    image: ikerry/ntpl:v1.0.1
     working_dir: /app
     volumes:
       - ".:/app"
