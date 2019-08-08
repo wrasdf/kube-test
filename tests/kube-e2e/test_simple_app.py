@@ -2,6 +2,7 @@ import unittest
 import time
 import requests
 import os
+import uuid
 from kube.utils.exec import EXEC
 
 class TestSimpleApp(unittest.TestCase):
@@ -17,9 +18,6 @@ class TestSimpleApp(unittest.TestCase):
 
 
     def setUp(self):
-        self.bucket = 'myob-test-kube-app'
-        self.key = 'test.txt'
-        self.content = 'Send Data By API'
         self.dns_name = os.getenv('dns_name', 'kube-app.svc.europa-stg.jupiter.myobdev.com').strip()
 
     def test_simple_app(self):
@@ -31,19 +29,25 @@ class TestSimpleApp(unittest.TestCase):
         self.assertEqual('OK!', response.text)
 
     def test_simple_app_with_kiam(self):
-        # when
-        createBucketRes = requests.post(f"https://{self.dns_name}/s3/v1/{self.bucket}")
-        putObjectRes = requests.put(f"https://{self.dns_name}/s3/v1/{self.bucket}/{self.key}", data={'data':f'{self.content}'})
-        getObjectRes = requests.get(f"https://{self.dns_name}/s3/v1/{self.bucket}/{self.key}")
+        # given
+        uuid4 = uuid.uuid4()
+        bucket = f'myob-test-kube-app-{uuid4}'
+        key = f'test-{uuid4}.txt'
+        content = f'Send Data By API - {uuid4}'
 
-        # # then
+        # when
+        createBucketRes = requests.post(f"https://{self.dns_name}/s3/v1/{bucket}")
+        putObjectRes = requests.put(f"https://{self.dns_name}/s3/v1/{bucket}/{key}", data={'data':f'{content}'})
+        getObjectRes = requests.get(f"https://{self.dns_name}/s3/v1/{bucket}/{key}")
+
+        # then
         self.assertEqual(200, createBucketRes.status_code)
         self.assertEqual(200, putObjectRes.status_code)
-        self.assertEqual(getObjectRes.json()["data"], self.content)
+        self.assertEqual(getObjectRes.json()["data"], content)
 
-        # # clean
-        requests.delete(f"https://{self.dns_name}/s3/v1/{self.bucket}/{self.key}")
-        requests.delete(f"https://{self.dns_name}/s3/v1/{self.bucket}")
+        # clean
+        requests.delete(f"https://{self.dns_name}/s3/v1/{bucket}/{key}")
+        requests.delete(f"https://{self.dns_name}/s3/v1/{bucket}")
 
     @classmethod
     def tearDownClass(cls):
