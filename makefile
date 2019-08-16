@@ -9,6 +9,7 @@ test-%:
 	./bin/test.sh $(*) onboarding
 
 test_in:
+	green ./tests/utils
 	green ./tests/cluster
 	green ./tests/system
 	green ./tests/kube-e2e

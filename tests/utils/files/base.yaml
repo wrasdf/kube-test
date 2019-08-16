@@ -1,0 +1,8 @@
+---
+onboarding:
+  name: kube-app
+  namespace: cash-in
+  repo: kube-test
+  container: ikerry/kube-app
+  containerPort: 8080
+  version: v0.1.9

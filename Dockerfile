@@ -1,4 +1,4 @@
-FROM python:alpine3.7
+FROM python:alpine3.9
 RUN apk --update add build-base gcc abuild binutils linux-headers libffi-dev libxml2 libxml2-dev libxslt-dev \
     make bash jq curl && \
   rm -rf /tmp/* /var/cache/apk/*
@@ -10,6 +10,6 @@ RUN echo "Installing kubectl $KUBECTL_VERSION" \
 
 WORKDIR /app
 COPY requirements.txt /app
-RUN pip install --upgrade pip && pip install -r /app/requirements.txt
+RUN pip install --upgrade pip && pip install --no-cache-dir -r /app/requirements.txt
 
 COPY . /app

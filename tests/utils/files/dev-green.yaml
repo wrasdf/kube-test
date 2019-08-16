@@ -1,0 +1,4 @@
+onboarding:
+  dns_name: kube-app.svc.dev-green.k8s.platform.myobdev.com
+  hpa:
+    enable: false

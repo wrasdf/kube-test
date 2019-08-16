@@ -1,5 +1,5 @@
 import unittest
-from kube.utils.namespace import NamespaceManager
+from kube.resources.namespace import NamespaceManager
 
 must_have_namespaces = [
     'default',

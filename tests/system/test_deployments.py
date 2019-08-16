@@ -1,6 +1,6 @@
 import unittest
 import os
-from kube.utils.deployment import DeploymentManager
+from kube.resources.deployment import DeploymentManager
 
 
 must_have = [

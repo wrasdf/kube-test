@@ -1,6 +1,6 @@
 import unittest
 import os
-from kube.utils.pod import PodManager
+from kube.resources.pod import PodManager
 
 must_checks = [
     {

@@ -1,6 +1,6 @@
 import unittest
 import os
-from kube.utils.daemonset import DaemonsetManager
+from kube.resources.daemonset import DaemonsetManager
 
 must_have = [
     {

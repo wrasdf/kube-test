@@ -6,3 +6,4 @@ pprint==0.1
 green==2.16.1
 requests==2.22.0
 uuid==1.30
+HiYaPyCo==0.4.14
