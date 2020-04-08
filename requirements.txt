@@ -1,6 +1,6 @@
 awscli==1.16.209
 boto3==1.9.199
-kubernetes==10.0.0
+kubernetes==11.0.0
 unittest2==1.1.0
 pprint==0.1
 green==2.16.1
