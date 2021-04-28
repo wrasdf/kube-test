@@ -3,7 +3,7 @@ boto3==1.12.39
 kubernetes==11.0.0
 unittest2==1.1.0
 pprint==0.1
-green==3.2.0
+green==3.2.6
 requests==2.24.0
 uuid==1.30
 HiYaPyCo==0.4.16
